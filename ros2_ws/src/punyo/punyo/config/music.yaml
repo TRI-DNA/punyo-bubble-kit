@@ -1,0 +1,4 @@
+bubble_music_node:
+  ros__parameters:
+    pressure_parameter: "/bubble_35A4E5A250555733362E3120FF091A1E/pressure"
+    debug_parameter: False

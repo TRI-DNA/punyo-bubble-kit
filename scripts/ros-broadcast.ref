@@ -1,0 +1,70 @@
+<dds>
+	<profiles>
+		<transport_descriptors>
+			<transport_descriptor>
+				<transport_id>udp_localhost</transport_id>
+				<type>UDPv4</type>
+			</transport_descriptor>
+		</transport_descriptors>
+		<participant profile_name="participant_profile">
+        		<rtps>
+            			<name>default_xrce_participant</name>
+            			<useBuiltinTransports>false</useBuiltinTransports>
+				<userTransports>
+					<transport_id>udp_localhost</transport_id>
+				</userTransports>
+        		</rtps>
+    		</participant>
+		<topic profile_name="bubble_B6369A4D50583234322E3120FF080637/pressure__t">
+			<name>rt/bubble_B6369A4D50583234322E3120FF080637/pressure</name>
+			<dataType>std_msgs::msg::dds_::Float32_</dataType>
+			<historyQos>
+			  <kind>KEEP_LAST</kind>
+			  <depth>5</depth>
+			</historyQos>
+		</topic>
+		<topic profile_name="bubble_B6369A4D50583234322E3120FF080637/led__t">
+			<name>rt/bubble_B6369A4D50583234322E3120FF080637/led</name>
+			<dataType>std_msgs::msg::dds_::Int32_</dataType>
+			<historyQos>
+			  <kind>KEEP_LAST</kind>
+			  <depth>5</depth>
+			</historyQos>
+		</topic>
+		<data_writer profile_name="bubble_B6369A4D50583234322E3120FF080637/pressure__dw">
+			<historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+			<qos>
+			  <reliability>
+			    <kind>BEST_EFFORT</kind>
+			  </reliability>
+			</qos>
+			<topic>
+			    <kind>NO_KEY</kind>
+			    <name>rt/bubble_B6369A4D50583234322E3120FF080637/pressure</name>
+			    <dataType>std_msgs::msg::dds_::Float32_</dataType>
+			    <historyQos>
+				<kind>KEEP_LAST</kind>
+				<depth>1</depth>
+			    </historyQos>
+			</topic>
+		</data_writer>		
+		<data_reader profile_name="bubble_B6369A4D50583234322E3120FF080637/led__dr">
+			<historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+			<qos>
+			  <reliability>
+			    <kind>BEST_EFFORT</kind>
+			  </reliability>
+			</qos>
+			<topic>
+			    <kind>NO_KEY</kind>
+			    <name>rt/bubble_B6369A4D50583234322E3120FF080637/led</name>
+			    <dataType>std_msgs::msg::dds_::Int32_</dataType>
+			    <historyQos>
+				<kind>KEEP_LAST</kind>
+				<depth>1</depth>
+			    </historyQos>
+			</topic>
+		</data_reader>			
+	</profiles>
+
+</dds>

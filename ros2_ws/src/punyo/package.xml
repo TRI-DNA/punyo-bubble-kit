@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>punyo</name>
+  <version>0.9.0</version>
+  <description>ROS2 package for the Punyo Soft-Bubble Sensor</description>
+  <maintainer email="edwardo.martinez@tri.global">Edwardo Martinez</maintainer>
+  <license>Punyo Soft-Bubble Sensor - Copyright 2022 Toyota Research Institute. All rights reserved.</license>
+
+  <depend>rclpy</depend>
+  <depend>image_transport</depend>
+  <depend>cv_bridge</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>python3-opencv</depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

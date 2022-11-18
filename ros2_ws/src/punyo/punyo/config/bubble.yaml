@@ -1,0 +1,7 @@
+image_subscriber_node:
+  ros__parameters:
+    rgb_topic_parameter: "/bubble_1/color/image_rect_raw"
+    depth_topic_parameter: "/bubble_1/depth/image_rect_raw"
+    optical_flow_parameter: 1
+    device_parameter: "cpu"
+    debug_parameter: False
