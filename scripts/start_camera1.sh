@@ -1,14 +1,10 @@
 #!/bin/bash
 set -e
+source set_env.sh
 
 SERIAL_NUMBER=${SERIAL_NUMBER:-"218622276874"}              # Connect to the camera with serial number
 EXIT_IF_CAMERA_NOT_FOUND=${EXIT_IF_CAMERA_NOT_FOUND:-false} # true: exit if not found; false: keep running if not found
 CAMERA_NAME=${CAMERA_NAME:-"bubble_1"}                      # Set the ROS2 topic name
-
-source /opt/ros/galactic/setup.bash
-# Set param AFTER sourcing ROS setup, otherwise doesn't seem to always work
-ROS_LOCALHOST_ONLY=1                                        # 1: keep published data local, 0: broadcast
-source ../ros2_ws/install/setup.bash
 
 die (){
   echo "$@" 1>&2
@@ -26,10 +22,11 @@ else
   fi
 fi
 
+# To differentiate between cameras on different USB ports, you can add a parameter:
+# e.g. usb_port_id:=2-1.4
 CAMERA_PARAMS="camera_name:=$CAMERA_NAME serial_number:=$SERIAL_NUMBER"
-GENERAL_PARAMS="log_level:=WARN pointcloud.enable:=false"
+GENERAL_PARAMS="log_level:=WARN pointcloud.enable:=true"
 COLORIZER_PARAMS="colorizer.enable:=true colorizer.color_scheme:=3"
-# 424x240
 DEPTH_PARAMS="depth_module.enable_auto_exposure.1:=false depth_module.profile:=640x480x30 depth_module.exposure:=1000 depth_module.gain:=128"
 echo "Using parameters: " $CAMERA_PARAMS $GENERAL_PARAMS $COLORIZER_PARAMS $DEPTH_PARAMS
 # Some warnings are logged by rs_launch.py about parameters not in the correct range (unrelated to the ones in this script)

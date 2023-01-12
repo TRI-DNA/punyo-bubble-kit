@@ -126,4 +126,4 @@ Either way, you will still need to re-zip the files back into a .zip to use the
 Include Library > Add .ZIP library option in the Arduino IDE.
 
 ---
-Punyo Soft-Bubble Sensor - Copyright 2022 Toyota Research Institute. All rights reserved.
+Punyo Soft-Bubble Sensor - Copyright 2023 Toyota Research Institute. All rights reserved.

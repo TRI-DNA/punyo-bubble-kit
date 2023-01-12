@@ -1,4 +1,4 @@
-# Punyo Soft-Bubble Sensor - Copyright 2022 Toyota Research Institute. All rights reserved.
+# Punyo Soft-Bubble Sensor - Copyright 2023 Toyota Research Institute. All rights reserved.
 
 import cv2
 import numpy as np

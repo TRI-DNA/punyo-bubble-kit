@@ -1,14 +1,10 @@
 #!/bin/bash
 set -e
+source set_env.sh
 
-SERIAL_NUMBER=${SERIAL_NUMBER:-"127122270513"}              # Connect to the camera with serial number
+SERIAL_NUMBER=${SERIAL_NUMBER:-"127122270468"}              # Connect to the camera with serial number
 EXIT_IF_CAMERA_NOT_FOUND=${EXIT_IF_CAMERA_NOT_FOUND:-false} # true: exit if not found; false: keep running if not found
-CAMERA_NAME=${CAMERA_NAME:-"bubble_1"}                      # Set the ROS2 topic name
-
-source /opt/ros/galactic/setup.bash
-# Set param AFTER sourcing ROS setup, otherwise doesn't seem to always work
-ROS_LOCALHOST_ONLY=1                                        # 1: keep published data local, 0: broadcast
-source ../ros2_ws/install/setup.bash
+CAMERA_NAME=${CAMERA_NAME:-"bubble_2"}                      # Set the ROS2 topic name
 
 die (){
   echo "$@" 1>&2
@@ -26,6 +22,8 @@ else
   fi
 fi
 
+# To differentiate between cameras on different USB ports, you can add a parameter:
+# e.g. usb_port_id:=2-2.4
 CAMERA_PARAMS="camera_name:=$CAMERA_NAME serial_number:=$SERIAL_NUMBER"
 GENERAL_PARAMS="log_level:=WARN pointcloud.enable:=false"
 COLORIZER_PARAMS="colorizer.enable:=true colorizer.color_scheme:=3"

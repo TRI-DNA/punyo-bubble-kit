@@ -97,10 +97,12 @@ rectangle "Soft-Bubble Sensor on ROS2" {
 
 
 # Installation Overview
-We've tested the Punyo Bubble Kit using the Foxy and Galactic distributions from ROS.
+We've tested the Punyo Bubble Kit using:
 
 * Ubuntu 20.04
 	* ROS2 Foxy or Galactic
+* Ubuntu 22.04
+	* ROS2 Humble
 * Camera Sensor SDK
 	* Intel RealSense SDK 2.0
 * Arduino IDE (optional)
@@ -113,14 +115,18 @@ We've tested the Punyo Bubble Kit using the Foxy and Galactic distributions from
 
 ## Step 1: Install the ROS2 distribution
 * Unbuntu 20.04
-	* ROS2 Galactic https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html
+	* ROS2 Galactic https://docs.ros.org/en/galactic/Installation/Ubuntu-Install-Debians.html
 	* Use the `ros-galactic-desktop` to get the recommended packages.
+
+* Unbuntu 22.04
+	* ROS2 Humble https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
+	* Use the `ros-humble-desktop` to get the recommended packages.
 
 ## Step 2: Install the SDK to use a D405 stereo depth camera
 * Install the RealSenseSDK 2.0 
 	* Note: Intel support for the D405 Camera is only available in ROS2, not ROS 1. 
 	* To install the pre-built SDK packages (Linux DKMS), following the instructions here: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
-	* As indicated in the link, make sure to install the development packages too:
+	* Make sure to install the development packages too:
 		* librealsense2-dev
 		* librealsense2-dbg
 
@@ -153,15 +159,18 @@ sudo apt-get install python3-rosdep -y
 
 sudo rosdep init
 
-rosdep update
+rosdep update --include-eol-distros # galactic EOL was Nov-2022
 
-# Be sure to change the distro as needed.
-rosdep install -i --from-path src --rosdistro galactic --skip-keys=librealsense2 -y
+# Be sure to change the distro as needed on your machine
+# rosdep install -i --from-path src --rosdistro galactic --skip-keys=librealsense2 -y
+rosdep install -i --from-path src --rosdistro humble --skip-keys=librealsense2 -y
+
 ```
 
 ## Step 5: Build the workspace
 ```
-source /opt/ros/galactic/setup.bash
+# Be sure to change the distro as needed on your machine
+source /opt/ros/humble/setup.bash
 cd punyo-bubble/ros2_ws
 
 # Build the packages
@@ -188,7 +197,7 @@ Or, if you want to set the initial parameters for the camera, you can use launch
 *Option 2*
 ```
 cd punyo-bubble/ros2_ws
-source /opt/ros/galactic/setup.bash
+source /opt/ros/humble/setup.bash
 source install/setup.bash
 
 ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=false
@@ -217,7 +226,7 @@ $ ./start_rqt.sh
 *Option 1.B*
 ``` 
 cd punyo-bubble/ros2_ws
-source /opt/ros/galactic/setup.bash
+source /opt/ros/humble/setup.bash
 rqt
 ```
 
@@ -252,7 +261,7 @@ RQT is handy because it has built-in plots and image views. It also allows you t
 
 ```
 cd ros2_ws
-source /opt/ros/galactic/setup.bash
+source /opt/ros/humble/setup.bash
 
 rqt
 ```
@@ -267,17 +276,24 @@ plot: shear magnitude
 ### Option 2: ROS2 RViz
 RViz also allows you to visualize the incoming data. It supports point clouds.
 
+You can enable pointcloud data by changing:
+`pointcloud.enable:=false` to `pointcloud.enable:=true`
+in the start_camera1.sh (and start_camera2.sh) script
+
 This should show you 2 image panels (RS depth and RGB) and a point cloud window.
 ```
 cd ros2_ws
-source /opt/ros/galactic/setup.bash
+source /opt/ros/humble/setup.bash
 source install/setup.bash
 
 ros2 run rviz2 rviz2 -d config/punyo.rviz
 ```
 
-You may need to reboot if:
-	an error about failing to create an opengl context
+If the punyo.rviz configuration file does not work, you can set up the pointcloud visualizer by setting the following:
+* Add a PointCloud2 element
+* Global: Fixed Frame
+
+You may need to reboot after installation if you get an error about `failing to create an opengl context`
 
 ## Image Processing Node
 
@@ -286,7 +302,7 @@ This is an example of processing the image data to compute optical flow.
 Option 1
 ```
 $ cd punyo-bubble/ros_ws
-$ source /opt/ros/galactic/setup.bash
+$ source /opt/ros/humble/setup.bash
 $ source install/setup.bash
 $ ros2 run punyo bubble_image_subscriber --ros-args --params-file src/punyo/punyo/config/bubble.yaml
 ```
@@ -329,7 +345,7 @@ Farneback
 RAFT - You can also set the Pytorch device mode
 ```
     optical_flow_parameter: 2
-    device_parameter: "cpu" or "gpu"
+    device_parameter: cpu or cuda
 ```
 
 
@@ -338,11 +354,69 @@ RAFT - You can also set the Pytorch device mode
 ### 1. Getting Pressure Data into ROS 2
 To get pressure data into ROS 2, we need to connect the Micro-ROS client running on the microcontroller with the ROS 2 distributed data service with the help of a XRCE-DDS agent.
 
-Start the Micro-ros agent to publish the data received from the microcontroller.
+Start the Micro-ros agent to publish the data received from the microcontroller (MC).
+
+** IMPORTANT: Before running the agent**
+The client running on the MC uses the references style of creating ROS2 entities. This means that you need to update the `ros.ref` to match the serial number of your microcontroller. If you run the agent without updating the `ros.ref` file, you will see an error stating that the entity was not found. 
+
+For more details on the refs format, see https://micro.ros.org/docs/tutorials/advanced/create_dds_entities_by_ref/ or check the contents of the `start_pressure1.sh` script.
+To find out the serial number you should be using, you can run the script as-is, and an error will appear in the logs indicating the serial number of your MC. Alternatively, you can check your devices under `/dev/serial/by-id` on your pc.
+
+There isn't variable support in the refs format, and so you will need to copy/paste the serial number into 8 locations.
+e.g. change `bubble_35A4E5A250555733362E3120FF091A1E` to `bubble_yourserialnumber` 
+
+Be sure to keep the prefixes (`rt/`) and suffices (`__dr` `__dw` `__t`) intact
+
+**IMPORTANT: Configuring whether to broadcast topics or keep them on localhost**
+
+By default, the `start_...` scripts and the `ros.ref` configuration file will keep the topics local to the pc you are running on. You can keep the localhost only mode:
+
+*localhost option in ref file*
+```
+				<interfaceWhiteList>
+					<address>127.0.0.1</address>
+				</interfaceWhiteList>set_en
+```
+
+*localhost option in set_env.sh script*
+
+`export ROS_LOCALHOST_ONLY=1`
+
+
+You can switch to the broadcasting mode with:
+
+*localhost option in ref file*
+
+```
+<!-- Remove or comment out the following block -->
+<!--
+				<interfaceWhiteList>
+					<address>127.0.0.1</address>
+				</interfaceWhiteList>
+-->
+```
+
+*localhost option in set_env.sh script*
+
+`export ROS_LOCALHOST_ONLY=0`
 
 **Option 1: Using a locally-installed Micro XRCE-DDS agent.**
 
 To install it, go the section "Installing the Agent standalone" at https://micro-xrce-dds.docs.eprosima.com/en/latest/installation.html#install-agent
+
+*NOTE: Ubuntu 22.04/jammy users*
+You may run into a build issue as jammy uses Openssl 3.x and the full Micro XRCE-DDS agent build references Openssl 1.1.1 (used for Ubuntu 20.04)
+
+To work around this, you can just build the uagent target as follows:
+
+```
+git clone https://github.com/eProsima/Micro-XRCE-DDS-Agent.git
+cd Micro-XRCE-DDS-Agent
+mkdir build && cd build
+cmake ..
+make uagent # <---- note the specific target
+# sudo make install # <--- run this if you want to install it systemwide, otherwise just run it from your build directory 
+```
 
 Once installed, run the following:
 ```
@@ -364,6 +438,9 @@ See the latter half of https://www.arduino.cc/en/Guide/Linux for more info.
 If you can't install the MicroXRCEagent, you can use a docker image to run the agent.
 
 **Option 2: Using a docker image to run the Micro XRCE-DDS agent**
+
+Note: As of Jan-4-2023, there isn't a docker image built for jammy yet.
+
 ```
 $ sudo apt install docker.io
 $ sudo docker run -it --rm -v /dev:/dev --privileged --net=host microros/micro-ros-agent:galactic serial --dev /dev/ttyACM0 -v6 -r ros.ref
@@ -383,13 +460,17 @@ Once you see entries, you can hit down-arrow to scroll through the options. Pick
 
 
 ## Troubleshooting
+### ROS2 localhost publishing
+
+### Topics
 To see the topics being published:
 ```
-$ source /opt/ros/galactic/setup.bash
-$ ros2 topic list
+cd punyo-bubble/scripts
+source set_env.sh
+ros2 topic list
 ```
-
-Sometimes the micro-ros client on the microcontroller may need to be reset, especially if pressure data is not being sent.
+### Pressure data
+Sometimes the micro-ros client on the microcontroller may need to be reset, especially if pressure data is not being sent. Check the `CLIENT_README.md` for more details.
 
 Unplug and plug the USB hub back into your PC.
 
@@ -397,6 +478,8 @@ Use the reset button on the microcontroller.
 
 Restart the `./start_pressure1.sh` script. (ctrl-c then run it again)
 
+
+### Camera data
 Restart the `./start_camera1.sh` script. (ctrl-c then run it again)
 
 ## Miscellaneous
@@ -404,11 +487,10 @@ If you are trying the sound demo, you will need to install the pygame package.
 
 And confirm that the pressure topic is valid in the start_demo.sh script.
 ```
-source /opt/ros/galactic/setup.bash
 pip3 install pygame
 cd punyo-bubble/scripts
 ./start_demo.sh
 ```
 
 ---
-Punyo Soft-Bubble Sensor - Copyright 2022 Toyota Research Institute. All rights reserved.
+Punyo Soft-Bubble Sensor - Copyright 2023 Toyota Research Institute. All rights reserved.

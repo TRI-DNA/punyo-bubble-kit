@@ -2,10 +2,10 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>punyo</name>
-  <version>0.9.0</version>
+  <version>0.9.1</version>
   <description>ROS2 package for the Punyo Soft-Bubble Sensor</description>
   <maintainer email="edwardo.martinez@tri.global">Edwardo Martinez</maintainer>
-  <license>Punyo Soft-Bubble Sensor - Copyright 2022 Toyota Research Institute. All rights reserved.</license>
+  <license>Punyo Soft-Bubble Sensor - Copyright 2023 Toyota Research Institute. All rights reserved.</license>
 
   <depend>rclpy</depend>
   <depend>image_transport</depend>

@@ -10,7 +10,7 @@ submodules = "punyo/utils"
 
 setup(
     name=package_name,
-    version='0.9.0',
+    version='0.9.1',
     packages=[package_name, submodules],
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -26,7 +26,7 @@ setup(
     maintainer='Edwardo Martinez',
     maintainer_email='edwardo.martinez@tri.global',
     description='ROS2 package for the Punyo Soft-Bubble Sensor',
-    license='Punyo Soft-Bubble Sensor - Copyright 2022 Toyota Research Institute. All rights reserved.',
+    license='Punyo Soft-Bubble Sensor - Copyright 2023 Toyota Research Institute. All rights reserved.',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
