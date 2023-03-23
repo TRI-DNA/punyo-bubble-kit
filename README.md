@@ -131,9 +131,10 @@ We've tested the Punyo Bubble Kit using:
 		* librealsense2-dbg
 
 ## Step 3: Clone the project
-Note the use of ```recurse-submodules``` to get the Intel Realsense package as a submodule.
+Note 1: the use of ```recurse-submodules``` to get the Intel Realsense package as a submodule.
+Note 2: the target folder is `punyo-bubble` (to match what's expected in the scripts)
 ```
-git clone --recurse-submodules git@github.shared-services.aws.tri.global:robotics/punyo-bubble.git
+git clone --recurse-submodules git@github.com:TRI-DNA/punyo-bubble-preview.git punyo-bubble
 ```
 ## Step 4: Prep to build
 ```
