@@ -14,7 +14,7 @@ To upload new code to the microcontroller, you can use the Arduino IDE with the 
 * Install the following libraries:
 	* micro_ros_arduino
 		* Micro ROS Arduino Project page: https://github.com/micro-ROS/micro_ros_arduino
-		* You will need to build the precompiled library. [See the configuration parameters required](#How-to-build-the-precompiled-library) or use the one provided [here](https://github.shared-services.aws.tri.global/robotics/punyo-bubble/tree/main/pressure_sensors/libraries).
+		* You will need to build the precompiled library. [See the configuration parameters required](#How-to-build-the-precompiled-library) or use the one provided [here](https://github.com/TRI-DNA/punyo-bubble-preview/tree/main/pressure_sensors/libraries).
 		* To install, Navigate to Sketch > Include Library > Add .ZIP library
 		* Select the zip file.
 	* Adafruit MPRLS
