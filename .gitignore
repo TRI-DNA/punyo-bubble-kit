@@ -2,7 +2,6 @@ ros2_ws/.idea/
 ros2_ws/install/
 ros2_ws/log/
 ros2_ws/build/
-ros2_ws/src/realsense-ros/
 **/.DS_Store
 devel/
 logs/
