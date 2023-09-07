@@ -138,7 +138,7 @@ git clone --recurse-submodules git@github.com:TRI-DNA/punyo-bubble-preview.git p
 ```
 ## Step 4: Prep to build
 ```
-cd punyo-bubble/ros2_ws
+cd punyo-bubble-kit/ros2_ws
 ```
 ### Install the build dependencies for colcon
 
@@ -172,7 +172,7 @@ rosdep install -i --from-path src --rosdistro humble --skip-keys=librealsense2 -
 ```
 # Be sure to change the distro as needed on your machine
 source /opt/ros/humble/setup.bash
-cd punyo-bubble/ros2_ws
+cd punyo-bubble-kit/ros2_ws
 
 # Build the packages
 colcon build
@@ -189,7 +189,7 @@ The easiest method is to use the following script to launch a publisher for the 
 
 *Option 1*
 ```
-$ cd punyo-bubble/scripts
+$ cd punyo-bubble-kit/scripts
 $ ./start_camera1.sh
 ```
 
@@ -197,7 +197,7 @@ Or, if you want to set the initial parameters for the camera, you can use launch
 
 *Option 2*
 ```
-cd punyo-bubble/ros2_ws
+cd punyo-bubble-kit/ros2_ws
 source /opt/ros/humble/setup.bash
 source install/setup.bash
 
@@ -220,13 +220,13 @@ Running RQT is fairly straightforward. You can use the convenience script if you
 *Option 1.A*
 Open a new terminal window.
 ```
-$ cd punyo-bubble/scripts
+$ cd punyo-bubble-kit/scripts
 $ ./start_rqt.sh
 ```
 
 *Option 1.B*
 ``` 
-cd punyo-bubble/ros2_ws
+cd punyo-bubble-kit/ros2_ws
 source /opt/ros/humble/setup.bash
 rqt
 ```
@@ -302,7 +302,7 @@ This is an example of processing the image data to compute optical flow.
 
 Option 1
 ```
-$ cd punyo-bubble/ros_ws
+$ cd punyo-bubble-kit/ros_ws
 $ source /opt/ros/humble/setup.bash
 $ source install/setup.bash
 $ ros2 run punyo bubble_image_subscriber --ros-args --params-file src/punyo/punyo/config/bubble.yaml
@@ -310,7 +310,7 @@ $ ros2 run punyo bubble_image_subscriber --ros-args --params-file src/punyo/puny
 
 Option 2
 ```
-$ cd punyo-bubble/scripts
+$ cd punyo-bubble-kit/scripts
 $ ./start_flow.sh
 ```
 
@@ -466,7 +466,7 @@ Once you see entries, you can hit down-arrow to scroll through the options. Pick
 ### Topics
 To see the topics being published:
 ```
-cd punyo-bubble/scripts
+cd punyo-bubble-kit/scripts
 source set_env.sh
 ros2 topic list
 ```
@@ -483,15 +483,25 @@ Restart the `./start_pressure1.sh` script. (ctrl-c then run it again)
 ### Camera data
 Restart the `./start_camera1.sh` script. (ctrl-c then run it again)
 
+## Launch script
+
+For convenience, you may want to try a shell script that launches the pressure agent, camera and flow scripts, and eventually rviz.
+
+```
+$ cd punyo-bubble-kit/scripts
+$ gnome-terminal --window -- ./start.sh
+```
+
 ## Miscellaneous
 If you are trying the sound demo, you will need to install the pygame package.
 
 And confirm that the pressure topic is valid in the start_demo.sh script.
 ```
 pip3 install pygame
-cd punyo-bubble/scripts
+cd punyo-bubble-kit/scripts
 ./start_demo.sh
 ```
 
----
-Punyo Soft-Bubble Sensor - Copyright 2023 Toyota Research Institute. All rights reserved.
+## License
+
+This repository is released under the CC BY-NC 4.0 license.
