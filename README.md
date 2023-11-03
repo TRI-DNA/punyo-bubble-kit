@@ -201,6 +201,8 @@ cd punyo-bubble-kit/ros2_ws
 source /opt/ros/humble/setup.bash
 source install/setup.bash
 
+# Using localhost only, to stay consistent with the other scripts
+export ROS_LOCALHOST_ONLY=1
 ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=false
 
 # Not all filter parameters appear to work via the command line.
@@ -228,6 +230,8 @@ $ ./start_rqt.sh
 ``` 
 cd punyo-bubble-kit/ros2_ws
 source /opt/ros/humble/setup.bash
+# Using localhost only, to stay consistent with the other scripts
+export ROS_LOCALHOST_ONLY=1
 rqt
 ```
 
